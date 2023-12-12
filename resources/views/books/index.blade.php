@@ -67,4 +67,8 @@
             </li>
         </ul>
     @endforelse
+
+    @if (request('filter') == '')
+        {{ $books->links() }}
+    @endif
 @endsection
