@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn() => to_route('book.index') );
 
 Route::resource('book' , BookController::class)->only(['index' , 'show']);
-
+ 
 Route::resource('book.review' , ReviewController::class)
         ->scoped(['reviews' => 'book'])
         ->only(['create' , 'store']);
