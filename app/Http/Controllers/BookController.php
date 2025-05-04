@@ -25,19 +25,17 @@ class BookController extends Controller
             'highest_rated_last_6months' => $books->HighestRatedLast6Month(),
             default => $books->latest()->WithAvgRating()->WithCountReviews()
         };
-
-        $books = cache()->remember("Books:{$RequestFilter}:{$RequestTitle}", 3600, fn() => $books->get());
-
+        
         return view('books.index', [
-            'books' => empty($RequestFilter) ? $books->paginate(15) : $books->get(),
+            'books' => $books->get(),
         ]);
     }
 
     public function show(int $id) //Book $book
     {
-        $book = cache()->remember("book:{$id}", 3600, fn() => Book::with([
+        $book = Book::with([
             'reviews' => fn($q) => $q->latest(),
-        ])->WithCountReviews()->WithAvgRating()->findOrFail($id));
+        ])->WithCountReviews()->WithAvgRating()->findOrFail($id);
 
         return view('books.show', ['book' => $book]);
     }
